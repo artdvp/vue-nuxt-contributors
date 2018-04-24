@@ -1,6 +1,6 @@
 <template>
   <section class="Details flex content-end flex-wrap h-screen">
-      <nuxt-link to="/" class="close no-underline bg-transparent hover:bg-black text-grey hover:text-white">X</nuxt-link>
+      <nuxt-link to="/" class="close no-underline hover:bg-black text-grey hover:text-white">X</nuxt-link>
       <div class="text-center container mx-auto max-w-md pt-8">
         <div class="group p-4 bg-white rounded w-full shadow-lg select-none overflow-hidden mx-auto">
         <div class="py-8">
@@ -48,11 +48,11 @@ export default {
 <style>
 .close {
   position: fixed;
-  top: 50px;
-  right: 50px;
+  top: 40px;
+  right: 30px;
   color: #000;
   font-size: 36px;
-  font-weight: 500;
+  font-weight: 300;
   background-color: #fff;
   text-decoration: none;
   border: 1px solid #000;
