@@ -1,7 +1,7 @@
 <template>
    <section class="IndexPage min-h-screen pb-8">
    <div class="text-center container mx-auto max-w-md">
-     <h1 class="font-thin py-8 px-2">Vue.js Contrubitors</h1>
+     <h1 class="font-thin py-8 px-2">Vue.js Contributors</h1>
      <ul class="list-reset">
        <li v-for="contributor in contributors" :key="contributor.login" class="p-2">
          <nuxt-link :to="contributor.login" class="link flex items-center no-underline rounded-full p-1 border-2 bg-transparent hover:bg-green">
