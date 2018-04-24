@@ -4,7 +4,7 @@
       <div class="text-center container mx-auto max-w-md pt-8">
         <div class="group p-4 bg-white rounded w-full shadow-lg select-none overflow-hidden mx-auto">
         <div class="py-8">
-            <img class="w-64 h-64 rounded-full" :src="`https://avatars1.githubusercontent.com/u/${contributor.id}?v=4&s=400`" alt="Avatar">
+            <img class="w-64 h-64 rounded-full shadow-lg" :src="`https://avatars1.githubusercontent.com/u/${contributor.id}?v=4&s=400`" alt="Avatar">
         </div>
         <h2 class="text-5xl font-normal pb-6 px-2"><a class="text_ex hover:text-black" :href="`https://www.github.com/${$route.params.login}`" target="_blank">{{ $route.params.login }}</a></h2>
         <p class="text-2xl text-grey-darker text-base">{{ contributor.name }}</p>
@@ -48,7 +48,7 @@ export default {
 <style>
 .close {
   position: fixed;
-  top: 30px;
+  top: 50px;
   right: 50px;
   color: #000;
   font-size: 36px;
