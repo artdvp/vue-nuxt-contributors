@@ -2,6 +2,11 @@
    <section class="IndexPage min-h-screen pb-8">
    <div class="text-center container mx-auto max-w-md">
      <h1 class="font-thin py-8 px-2">Vue.js Contributors</h1>
+     <h2 class="font-thin text-green-darker">By <a href="https://github.com/artdvp/vue-nuxt-contributors" class="link_ex" target="_blank">Artdvp</a> &nbsp;<label class="i-love">❤</label> Vue</h2>
+     <br>
+     <div v-if="contributors.length === 0" class="loading">
+            Loading...
+     </div>
      <ul class="list-reset">
        <li v-for="contributor in contributors" :key="contributor.login" class="p-2">
          <nuxt-link :to="contributor.login" class="link flex items-center no-underline rounded-full p-1 border-2 bg-transparent hover:bg-green">
@@ -14,26 +19,79 @@
        </li>
      </ul>
    </div>
-   <div class="footer-text text-center container mx-auto max-w-md">
-     <h4>Made by <a href="https://github.com/artdvp" class="link_ex" target="_blank">Artdvp</a> | Made with <label class="i-love">❤</label>&nbsp;<a class="link_ex" href="https://nuxtjs.org/" target="_blank">Nuxt.js</a></h4>
-     <br>
-      <h4>Inspiration from Frontend Developer Love Conference in Amsterdam</h4>
-     </div>
+   <!-- <h4>Inspiration from Frontend Developer Love Conference in Amsterdam</h4> -->
   </section>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-   async asyncData({ app, error }) {
-    const contributors = await app.$axios.$get(
-      "https://api.github.com/repos/vuejs/vue/contributors"
-    );
-    console.log(contributors);
-    return { contributors };
+  //  async asyncData({ app, error }) {
+  //   const contributors = await app.$axios.$get(
+  //     "https://api.github.com/repos/vuejs/vue/contributors"
+  //   );
+  //   console.log(contributors);
+  //   return { contributors };
+  // },
+  data() {
+    return {
+      bottom: false,
+      pageOldCount: 0,
+      pageCount: 1,
+      contributors: []
+    }
+  },
+  watch: {
+    bottom(bottom) {
+      if (bottom) {
+        this.pageCount++
+        this.getContribute()
+      }
+    }
+  },
+  created() {
+    if (process.browser) {
+      window.addEventListener('scroll', () => {
+        this.bottom = this.bottomVisible()
+      })
+      this.getContribute()
+    }
+  },
+  methods: {
+    bottomVisible() {
+      const scrollY = window.scrollY
+      const visible = document.documentElement.clientHeight
+      const pageHeight = document.documentElement.scrollHeight
+      const bottomOfPage = visible + scrollY >= pageHeight
+      return bottomOfPage || pageHeight < visible
+    },
+    async getContribute() {
+      if (this.pageOldCount !== this.pageCount) {
+        let _url = `https://api.github.com/repos/vuejs/vue/contributors?page=${this.pageCount}`
+
+        const rx = await axios.get(_url).then(res => {
+          let con = res.data
+          if (con) {
+            if (con.length > 0) {
+              this.contributors.push(...con)
+              this.pageOldCount = this.pageCount
+              if (this.bottomVisible()) {
+                this.getContribute()
+              }
+            } else {
+              this.pageCount = this.pageOldCount
+            }
+          } else {
+            this.pageCount = this.pageOldCount
+          }
+        })
+      }
+    }
   },
   head: {
     title: 'Vue.js contributos',
-    meta: [{ hid: 'description', name: 'description', content: 'Welcome' }]
+    meta: [{ hid: 'vue contributors', name: 'nuxtjs', content: 'vue contributors' }]
   }
 }
 </script>
@@ -50,11 +108,11 @@ export default {
 
 h1 {
   color: #34495e;
-  font-family: Helvetica,Arial , sans-serif;
-  font-size:  3rem;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 3rem;
 }
 
-.footer-text{
+.footer-text {
   padding-top: 2rem;
 }
 
@@ -68,5 +126,12 @@ h1 {
 
 .link_ex {
   color: green;
+  text-decoration: none;
+}
+
+.loading {
+  color: white;
+  text-align: center;
+  font-size: 20px;
 }
 </style>
